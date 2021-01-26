@@ -9,28 +9,42 @@ using std::endl;
 
 class TestState1 : public State
 {
-    State* updateState() override;
+public:
+    TestState1(Context* context)
+        : State(context)
+    {}
+
+    void updateState() override;
 };
+
 
 class TestState2 : public State
 {
-    State* updateState() override;
+public:
+    TestState2(Context* context)
+        : State(context)
+    {}
+
+    void updateState() override;
 };
 
 
-State* TestState1::updateState()
+
+void TestState1::updateState()
 {
     cout << "test state 1 is working" << endl;
 
-    return new TestState2;
+    context->setState<TestState2>(context);
 }
 
-State* TestState2::updateState()
+
+void TestState2::updateState()
 {
     cout << "test state 2 is working" << endl;
 
-    return new TestState1;
+    context->setState<TestState1>(context);
 }
+
 
 
 class StateWithParams : public State
@@ -39,19 +53,19 @@ class StateWithParams : public State
     float v2;
 
 public:
-    StateWithParams(int var1, float var2)
+    StateWithParams(Context* context, int var1, float var2)
+        : State(context)
     {
         v1 = var1;
         v2 = var2;
     }
 
-    State* updateState() override
+    void updateState() override
     {
         cout << "state with params: " << v1 << " and " << v2 << endl;
-
-        return nullptr;
     }
 };
+
 
 
 int main()
@@ -59,14 +73,17 @@ int main()
     cout << "Hello world!" << endl;
 
     
-    Context context(new TestState1);
+    Context context;
+    context.setState<TestState1>(&context); // remember to pass a pointer to Context class
+
 
     for (int i = 0; i < 10; i++)
         context.updateState();
 
-    context.setCurrentState<StateWithParams>(5, 8.4f);
+    context.setState<StateWithParams>(&context, 5, 8.4f); // remember to pass a pointer to Context class
 
-    context.updateState();
+    for (int i = 0; i < 4; i++)
+        context.updateState();
 
 
     return 0;

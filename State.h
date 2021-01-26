@@ -9,10 +9,20 @@
 #ifndef STATE_H
 #define STATE_H
 
+class Context;
+
 
 class State
 {
+protected:
+    Context* context;
+
 public:
+    State(Context* _context)
+        : context(_context)
+    {
+    }
+
     virtual ~State() {}
 
     /**
@@ -22,7 +32,7 @@ public:
      * @return State* new dynamically allocated object or nullptr
      * if this state should remain.
      */
-    virtual State* updateState() = 0;
+    virtual void updateState() = 0;
 
     /**
      * @brief Optional state name getter.

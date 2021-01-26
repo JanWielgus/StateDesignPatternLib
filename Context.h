@@ -14,39 +14,29 @@
 
 class Context
 {
-    State* currentState;
+    State* currentState = nullptr;
+    State* nextState = nullptr;
 
 public:
     /**
-     * @param initialState dynamically allocated initial state.
+     * @brief Does nothing. To set state use setState method.
      */
-    Context(State* initialState)
-        : currentState(initialState)
+    Context()
     {
     }
 
 
     /**
-     * @brief Set state. State have to be new, dynamically
-     * allocated object.
+     * @brief Set current state (specify concrete state class
+     * as first template argument. Pass parameters in parenthesis,
+     * like in constructor).
+     * @tparam T Concrete State class to set.
      */
-    void setCurrentState(State* state)
+    template <class T, class... Types>
+    void setState(Types... args)
     {
-        delete currentState;
-        currentState = state;
-    }
-
-
-    /**
-     * @brief This method can be used to set current state,
-     * if state object constructor receives no parameters.
-     * @tparam T 
-     */
-    template <class T, class ... Types>
-    void setCurrentState(Types ... args)
-    {
-        delete currentState;
-        currentState = new T(args...);
+        delete nextState;
+        nextState = new T(args...);
     }
     
 
@@ -56,17 +46,15 @@ public:
      */
     void updateState()
     {
-        if (currentState == nullptr)
-            return;
-
-        State* nextState = currentState->updateState();
-
-        // if nextState == nullptr -> current state remains
         if (nextState != nullptr)
         {
             delete currentState;
             currentState = nextState;
+            nextState = nullptr;
         }
+
+        if (currentState != nullptr)
+            currentState->updateState();
     }
 };
 
