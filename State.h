@@ -15,7 +15,7 @@ class Context;
 class State
 {
 protected:
-    Context* context;
+    Context* const context;
 
 public:
     State(Context* _context)
