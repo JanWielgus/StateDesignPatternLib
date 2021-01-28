@@ -32,7 +32,7 @@ public:
 
 void TestState1::updateState()
 {
-    cout << "test state 1 is working" << endl;
+    cout << "TestState1 is working" << endl;
 
     context->setState<TestState2>(context);
 }
@@ -40,7 +40,7 @@ void TestState1::updateState()
 
 void TestState2::updateState()
 {
-    cout << "test state 2 is working" << endl;
+    cout << "TestState2 is working" << endl;
 
     context->setState<TestState1>(context);
 }
@@ -62,7 +62,12 @@ public:
 
     void updateState() override
     {
-        cout << "state with params: " << v1 << " and " << v2 << endl;
+        cout << "StateWithParams: " << v1 << " and " << v2 << endl;
+    }
+
+    void entryEvent() override
+    {
+        cout << "Entering to StateWithParams" << endl;
     }
 };
 

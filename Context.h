@@ -51,6 +51,8 @@ public:
             delete currentState;
             currentState = nextState;
             nextState = nullptr;
+            
+            currentState->entryEvent();
         }
 
         if (currentState != nullptr)

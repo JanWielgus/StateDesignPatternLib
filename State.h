@@ -17,7 +17,6 @@ class State
 protected:
     Context* const context;
 
-public:
     State(Context* _context)
         : context(_context)
     {
@@ -35,6 +34,12 @@ public:
     virtual void updateState() = 0;
 
     /**
+     * @brief Can be overriden. Called once
+     * before the first call of updateState() method.
+     */
+    virtual void entryEvent() {}
+
+    /**
      * @brief Optional state name getter.
      * Can be overriden in derivative class.
      */
@@ -42,6 +47,8 @@ public:
     {
         return "";
     }
+
+    friend class Context;
 };
 
 
