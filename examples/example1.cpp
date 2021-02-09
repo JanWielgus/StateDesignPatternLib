@@ -15,6 +15,9 @@ public:
     {}
 
     void updateState() override;
+
+    // optional: override entryEvent() method
+    // called each time this event is updated for the first time
 };
 
 
@@ -26,6 +29,9 @@ public:
     {}
 
     void updateState() override;
+
+    // optional: override entryEvent() method
+    // called each time this event is updated for the first time
 };
 
 
@@ -77,14 +83,21 @@ int main()
 {
     cout << "Hello world!" << endl;
 
-    
-    Context context;
-    context.setState<TestState1>(&context); // remember to pass a pointer to Context class
 
+    Context context;
+
+
+// States with default constructor:
+
+    context.setState<TestState1>(&context); // remember to pass a pointer to Context class
 
     for (int i = 0; i < 10; i++)
         context.updateState();
 
+
+// States without default constructor or with other optional constructors:
+
+    // For states without default constructor, pass additional parameters after context pointer
     context.setState<StateWithParams>(&context, 5, 8.4f); // remember to pass a pointer to Context class
 
     for (int i = 0; i < 4; i++)
